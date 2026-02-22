@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Workflow Orchestration Prototype
 
-## Getting Started
+A multi-tenant AI-driven sales intake orchestration backend exploring guardrails, state integrity, and structured LLM control.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Overview
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This prototype simulates an AI sales automation system where an LLM drives conversation state transitions while a deterministic backend enforces safety.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The focus is not UI — it is **workflow reliability under probabilistic AI reasoning**.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Architecture
 
-To learn more about Next.js, take a look at the following resources:
+- Next.js (API layer)
+- PostgreSQL (Neon)
+- Prisma ORM
+- Groq LLM (Llama 3.1)
+- TypeScript
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## System Flow
 
-## Deploy on Vercel
+Incoming Message  
+→ LLM (structured JSON output)  
+→ Confidence gating  
+→ State machine validation  
+→ CRM update + interaction log  
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Core Design
+
+- **Structured LLM Output** (strict JSON contract)
+- **Deterministic State Guards** (AI cannot directly mutate state)
+- **Confidence-Based Escalation**
+- **Multi-Tenant Configuration Injection**
+- **Persistent Interaction Logging**
+
+---
+
+## Observed Failure Modes
+
+- Over-escalation bias in ambiguous inputs  
+- Prompt brittleness affecting state transitions  
+- Confidence miscalibration  
+- Structured JSON fragility  
+- Tension between AI autonomy and deterministic state enforcement  
+
+These constraints become critical at scale.
+
+---
+
+## Example API
+
+`POST /api/message`
+
+```json
+{
+  "tenantId": "uuid",
+  "phone": "+15551234567",
+  "message": "Hi, I'm interested"
+}
+
+Response:
+
+{
+  "reply": "Thanks for reaching out...",
+  "newState": "qualifying",
+  "confidence": 0.82
+}
