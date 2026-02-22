@@ -72,3 +72,15 @@ Response:
   "newState": "qualifying",
   "confidence": 0.82
 }
+
+## Purpose
+
+Built to explore real-world bottlenecks in AI-driven workflow systems:
+
+Guardrail design
+
+State integrity
+
+Configuration scaling
+
+Automation gating
