@@ -54,6 +54,20 @@ These constraints become critical at scale.
 
 ---
 
+## Purpose
+
+Built to explore real-world bottlenecks in AI-driven workflow systems:
+
+Guardrail design
+
+State integrity
+
+Configuration scaling
+
+Automation gating
+
+---
+
 ## Example API
 
 `POST /api/message`
@@ -73,14 +87,4 @@ Response:
   "confidence": 0.82
 }
 
-## Purpose
 
-Built to explore real-world bottlenecks in AI-driven workflow systems:
-
-Guardrail design
-
-State integrity
-
-Configuration scaling
-
-Automation gating
