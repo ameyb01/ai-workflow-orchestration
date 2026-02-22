@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Tenant {
+  id            String   @id @default(uuid())
+  name          String
+  config        Json
+  promptVersion String   @default("v1.0")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  contacts      Contact[]
+}
+
+model Contact {
+  id          String   @id @default(uuid())
+  tenantId    String
+  name        String?
+  phone       String
+  dealStage   String   @default("new_lead")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+  interactions Interaction[]
+  deals       Deal[]
+}
+
+model Interaction {
+  id        String   @id @default(uuid())
+  contactId String
+  message   String
+  direction String   // inbound | outbound
+  createdAt DateTime @default(now())
+
+  contact   Contact  @relation(fields: [contactId], references: [id])
+}
+
+model Deal {
+  id        String   @id @default(uuid())
+  contactId String
+  stage     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  contact   Contact  @relation(fields: [contactId], references: [id])
+}
